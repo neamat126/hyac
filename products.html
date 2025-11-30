@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bags - Hyacinth Products</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .thumbnail {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .thumbnail:hover {
+      border-color: #007bff;
+      transform: scale(1.05);
+    }
+
+    .thumbs-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* مسافة بين الصور */
+      margin-right: 15px;
+    }
+
+    .product-image-zoom-wrapper {
+      overflow: hidden;
+      position: relative;
+      max-height: 450px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: zoom-in;
+    }
+
+    #mainProductImage {
+      width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      transform-origin: top left;
+    }
+
+    /* تنسيق الجدول */
+    .product-specs {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-family: Arial, sans-serif;
+    }
+
+    .product-specs td {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+    }
+
+    .product-specs tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .product-specs tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .product-specs td:first-child {
+      font-weight: 600;
+      background-color: #f0f0f0;
+      width: 35%;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<!-- Navbar -->
+<div class="container-fluid fixed-top bg-white shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-light container">
+    <a href="index.html" class="navbar-brand fw-bold">Hyacinth</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div style="height:80px;"></div> <!-- Spacer -->
+
+<!-- Product Section -->
+<div class="container py-5">
+  <div class="row">
+    <!-- Image Gallery (Thumbnails + Main Image) -->
+  <div class="col-md-6 d-flex">
+  <div class="thumbs-column">
+    <!-- الصور الصغيرة -->
+    <img id="thumb1" class="thumbnail" onmouseenter="changeImage(this)" />
+    <img id="thumb2" class="thumbnail" onmouseenter="changeImage(this)" />
+    <img id="thumb3" class="thumbnail" onmouseenter="changeImage(this)" />
+  </div>
+
+  <div class="flex-fill product-image-zoom-wrapper"
+       onmousemove="zoomImage(event)" 
+       onmouseleave="resetZoom()">
+    <!-- الصورة الكبيرة -->
+    <img id="mainProductImage" src="" alt="Product Image" />
+  </div>
+</div>
+
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h2 class="fw-bold">Handmade Bags - Eco Friendly</h2>
+      <p class="text-muted">Model Code: BsLMRCrIrBsMBRCrIr</p>
+      <p><strong>Price:</strong> <span class="fs-4 text-primary">EGP 140.00</span></p>
+      <p><strong>Minimum Order:</strong> 50 pieces</p>
+      <p><strong>Delivery Time:</strong> 7-10 days</p>
+
+      <p>This eco-friendly handmade bag is crafted with natural materials. Ideal for daily use, shopping, or gifting.</p>
+
+      <a href="cart.html" class="btn btn-success btn-lg mb-3">Add to Cart</a><br />
+      <a href="index.html" class="btn btn-outline-secondary">← Back to Products</a>
+    </div>
+  </div>
+
+  <!-- Product Specifications -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h4 class="mb-3">Product Specifications</h4>
+      <table class="product-specs">
+        <tr><td>Material</td><td>Natural Cotton</td></tr>
+        <tr><td>Color Options</td><td>Beige, Brown, White</td></tr>
+        <tr><td>Dimensions</td><td>30cm x 40cm x 10cm</td></tr>
+        <tr><td>Weight</td><td>350g</td></tr>
+        <tr><td>Packaging</td><td>Individual Polybags</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="container-fluid bg-dark text-white mt-5 py-4">
+  <div class="container text-center">
+    <p class="mb-0">&copy; 2025 Hyacinth Handmade Products. All rights reserved.</p>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function changeImage(thumb) {
+    const mainImg = document.getElementById("mainProductImage");
+    mainImg.src = thumb.src;
+    resetZoom();
+  }
+
+  function zoomImage(event) {
+    const wrapper = event.currentTarget;
+    const img = wrapper.querySelector("#mainProductImage");
+
+    const rect = wrapper.getBoundingClientRect();
+    const zoomScale = 2;
+
+    const offsetX = event.clientX - rect.left;
+    const offsetY = event.clientY - rect.top;
+
+    const xPercent = offsetX / rect.width;
+    const yPercent = offsetY / rect.height;
+
+    img.style.transformOrigin = `${xPercent * 100}% ${yPercent * 100}%`;
+    img.style.transform = `scale(${zoomScale})`;
+  }
+
+  function resetZoom() {
+    const img = document.getElementById("mainProductImage");
+    img.style.transform = "scale(1)";
+    img.style.transformOrigin = "center center";
+  }
+</script>
+<script>
+  // قراءة اسم الصورة الأساسية من الرابط
+  const params = new URLSearchParams(window.location.search);
+  const imgName = params.get("img");
+
+  if (imgName) {
+    const mainImg = document.getElementById("mainProductImage");
+    const thumbs = [
+      document.getElementById("thumb1"),
+      document.getElementById("thumb2"),
+      document.getElementById("thumb3"),
+    ];
+
+    // الصورة الرئيسية
+    mainImg.src = "img/" + imgName;
+
+    // صور مصغرة بنفس اسم الصورة لكن بأسماء متسلسلة (1، 2، 3)
+    // مثال: لو الصورة الأساسية اسمها "bag1.jpg"
+    // الصور الصغيرة هتبقى "bag1-1.jpg", "bag1-2.jpg", "bag1-3.jpg"
+    const baseName = imgName.split(".")[0];
+    const ext = imgName.split(".")[1];
+
+    thumbs.forEach((thumb, i) => {
+      const thumbSrc = `img/${baseName}-${i + 1}.${ext}`;
+      thumb.src = thumbSrc;
+      // fallback لو الصورة مش موجودة
+      thumb.onerror = () => (thumb.src = "img/" + imgName);
+    });
+  }
+</script>
+
+
+</body>
+</html>
